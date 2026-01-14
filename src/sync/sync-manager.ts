@@ -79,25 +79,35 @@ export class SyncManager {
     // Step 2: Convert scan date to timestamp
     const scanTimestamp = dateToTimestamp(record.scanDate);
 
-    // Step 3: Create Lark Base record
-    const larkRecord: LarkBaseRecord = {
-      fields: {
-        name: record.name,
-        company: record.company,
-        department: record.department,
-        position: record.position,
-        email: record.email,
-        phone: record.phone,
-        mobile: record.mobile,
-        fax: record.fax,
-        postalCode: record.postalCode,
-        address: record.address,
-        url: record.url,
-        notes: record.notes,
-        image: fileToken !== undefined ? [{ file_token: fileToken }] : [],
-        scanDate: scanTimestamp
-      }
+    // Step 3: Create Lark Base record with Japanese field names
+    // Note: Phone/Mobile/FAX fields are only included if they have values
+    const fields: Record<string, string | number> = {
+      '氏名': record.name,
+      '会社名': record.company,
+      '部署': record.department,
+      '役職': record.position,
+      '電子メール': record.email,
+      '郵便番号': record.postalCode,
+      '住所': record.address,
+      'URL': record.url,
+      'メモ': record.notes,
+      '名刺日付': scanTimestamp
     };
+
+    // Only include phone fields if they have values (Lark phone fields don't accept empty strings)
+    if (record.phone) {
+      fields['電話番号'] = record.phone;
+    }
+    if (record.mobile) {
+      fields['携帯番号'] = record.mobile;
+    }
+    if (record.fax) {
+      fields['FAX番号'] = record.fax;
+    }
+
+    const larkRecord = {
+      fields
+    } as LarkBaseRecord;
 
     // Step 4: Add to Lark Base
     console.log('  Adding record to Lark Base...');

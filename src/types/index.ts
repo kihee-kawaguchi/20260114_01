@@ -21,25 +21,24 @@ export interface ScanSnapRecord {
 
 /**
  * Lark Base record structure
+ * Uses Japanese field names as defined in the Lark Base table
+ * Phone fields are optional as Lark phone fields don't accept empty strings
  */
 export interface LarkBaseRecord {
   fields: {
-    name: string;
-    company: string;
-    department: string;
-    position: string;
-    email: string;
-    phone: string;
-    mobile: string;
-    fax: string;
-    postalCode: string;
-    address: string;
-    url: string;
-    notes: string;
-    image: Array<{
-      file_token: string;
-    }>;
-    scanDate: number; // Unix timestamp in milliseconds
+    '氏名': string;
+    '会社名': string;
+    '部署': string;
+    '役職': string;
+    '電子メール': string;
+    '電話番号'?: string;
+    '携帯番号'?: string;
+    'FAX番号'?: string;
+    '郵便番号': string;
+    '住所': string;
+    'URL': string;
+    'メモ': string;
+    '名刺日付': number; // Unix timestamp in milliseconds
   };
 }
 
