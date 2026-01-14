@@ -7,13 +7,13 @@ const mockedAxios = vi.mocked(axios, true);
 
 describe('LarkClient', () => {
   let client: LarkClient;
+  let mockAxiosInstance: any;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    client = new LarkClient('test_app_id', 'test_app_secret');
 
-    // Mock axios.create
-    mockedAxios.create = vi.fn().mockReturnValue({
+    // Create mock axios instance
+    mockAxiosInstance = {
       post: vi.fn(),
       get: vi.fn(),
       put: vi.fn(),
@@ -25,7 +25,12 @@ describe('LarkClient', () => {
         response: { use: vi.fn(), eject: vi.fn(), clear: vi.fn() }
       },
       getUri: vi.fn()
-    } as never);
+    };
+
+    // Mock axios.create to return our mock instance
+    mockedAxios.create = vi.fn().mockReturnValue(mockAxiosInstance);
+
+    client = new LarkClient('test_app_id', 'test_app_secret');
   });
 
   describe('constructor', () => {
@@ -39,9 +44,8 @@ describe('LarkClient', () => {
       const mockToken = 'test_token';
       const mockRecordId = 'record_123';
 
-      // Mock token response
-      const mockAxiosInstance = mockedAxios.create();
-      vi.spyOn(mockAxiosInstance, 'post').mockImplementation((url: string) => {
+      // Mock token response and record creation
+      mockAxiosInstance.post.mockImplementation((url: string) => {
         if (url.includes('tenant_access_token')) {
           return Promise.resolve({
             data: {
@@ -50,7 +54,7 @@ describe('LarkClient', () => {
               tenant_access_token: mockToken,
               expire: 7200
             }
-          }) as never;
+          });
         }
         if (url.includes('/records')) {
           return Promise.resolve({
@@ -64,9 +68,9 @@ describe('LarkClient', () => {
                 }
               }
             }
-          }) as never;
+          });
         }
-        return Promise.reject(new Error('Unexpected URL')) as never;
+        return Promise.reject(new Error('Unexpected URL'));
       });
 
       const record = {
@@ -93,8 +97,7 @@ describe('LarkClient', () => {
     });
 
     it('should throw error when API returns error', async () => {
-      const mockAxiosInstance = mockedAxios.create();
-      vi.spyOn(mockAxiosInstance, 'post').mockImplementation((url: string) => {
+      mockAxiosInstance.post.mockImplementation((url: string) => {
         if (url.includes('tenant_access_token')) {
           return Promise.resolve({
             data: {
@@ -103,14 +106,14 @@ describe('LarkClient', () => {
               tenant_access_token: 'test_token',
               expire: 7200
             }
-          }) as never;
+          });
         }
         return Promise.resolve({
           data: {
             code: 500,
             msg: 'Internal error'
           }
-        }) as never;
+        });
       });
 
       const record = {

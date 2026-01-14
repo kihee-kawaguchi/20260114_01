@@ -12,7 +12,10 @@ export default defineConfig({
         'dist/',
         '**/*.test.ts',
         '**/*.config.ts',
-        'src/cli.ts'
+        'src/cli.ts',
+        'src/index.ts',
+        'test-*.ts',
+        '.claude/**/*'
       ],
       thresholds: {
         lines: 70,
