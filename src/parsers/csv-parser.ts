@@ -26,20 +26,20 @@ export async function parseScanSnapCSV(csvPath: string): Promise<ScanSnapRecord[
 
     // Map to ScanSnapRecord type
     return records.map((record) => ({
-      name: record['名前'] ?? record['name'] ?? '',
+      name: record['氏名'] ?? record['名前'] ?? record['name'] ?? '',
       company: record['会社名'] ?? record['company'] ?? '',
       department: record['部署'] ?? record['department'] ?? '',
       position: record['役職'] ?? record['position'] ?? '',
-      email: record['メールアドレス'] ?? record['email'] ?? '',
+      email: record['電子メール'] ?? record['メールアドレス'] ?? record['email'] ?? '',
       phone: record['電話番号'] ?? record['phone'] ?? '',
       mobile: record['携帯電話'] ?? record['mobile'] ?? '',
-      fax: record['FAX'] ?? record['fax'] ?? '',
+      fax: record['FAX番号'] ?? record['FAX'] ?? record['fax'] ?? '',
       postalCode: record['郵便番号'] ?? record['postalCode'] ?? '',
       address: record['住所'] ?? record['address'] ?? '',
       url: record['URL'] ?? record['url'] ?? '',
-      notes: record['備考'] ?? record['notes'] ?? '',
+      notes: record['メモ'] ?? record['備考'] ?? record['notes'] ?? '',
       imagePath: record['画像パス'] ?? record['imagePath'] ?? '',
-      scanDate: record['スキャン日時'] ?? record['scanDate'] ?? ''
+      scanDate: record['名刺日付'] ?? record['スキャン日時'] ?? record['scanDate'] ?? ''
     }));
   } catch (error) {
     if (error instanceof Error) {
