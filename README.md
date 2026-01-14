@@ -37,11 +37,13 @@ SCANSNAP_IMAGE_DIR=./data/images
 
 ### Lark API認証情報の取得
 
-1. [Lark Open Platform](https://open.feishu.cn/)にアクセス
+1. [Lark Open Platform](https://open.larksuite.com/)（日本版）または [Feishu Open Platform](https://open.feishu.cn/)（中国版）にアクセス
 2. 新しいアプリを作成
 3. App IDとApp Secretを取得
 4. Lark Baseで新しいBaseとTableを作成
 5. Base IDとTable IDを確認
+
+**注意**: このツールは日本版Lark（larksuite.com）に対応しています。中国版Feishuを使用する場合は、`src/api/lark-client.ts`のエンドポイントを変更してください。
 
 ## 使用方法
 

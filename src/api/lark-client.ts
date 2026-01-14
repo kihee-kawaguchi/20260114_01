@@ -11,7 +11,7 @@ import type {
 export class LarkClient {
   private readonly appId: string;
   private readonly appSecret: string;
-  private readonly baseUrl = 'https://open.feishu.cn/open-apis';
+  private readonly baseUrl = 'https://open.larksuite.com/open-apis';
   private accessToken: string | null = null;
   private tokenExpiry: number = 0;
   private readonly axios: AxiosInstance;
